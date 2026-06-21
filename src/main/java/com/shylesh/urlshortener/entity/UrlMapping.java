@@ -15,6 +15,8 @@ public class UrlMapping {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
+
+    long clickCount = 0;
     
     String originalUrl;
     String shortUrl;
@@ -51,4 +53,13 @@ public class UrlMapping {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+
+    public long getClickCount() {
+        return clickCount;
+    }
+
+    public void setClickCount(long clickCount) {
+        this.clickCount = clickCount;
+    }
+    
 }

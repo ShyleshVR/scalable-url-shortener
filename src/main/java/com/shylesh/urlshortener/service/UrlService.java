@@ -45,6 +45,12 @@ public class UrlService {
         return urlMappingRepository.findByShortUrl(shortUrl).orElseThrow(() -> new UrlNotFoundException("URL not found for short code: " + shortUrl));
     }
 
+    public UrlMapping clicked(String shortUrl) {
+        UrlMapping urlMapping = getByShortUrl(shortUrl);
+        urlMapping.setClickCount(urlMapping.getClickCount() + 1);
+        return urlMappingRepository.save(urlMapping);
+    }
+
     private String encodeBase62(long id) {
         if (id == 0) {
             return String.valueOf(BASE62_CHARACTERS.charAt(0));

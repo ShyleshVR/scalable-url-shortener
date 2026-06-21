@@ -1,6 +1,9 @@
 package com.shylesh.urlshortener.controller;
 
 import com.shylesh.urlshortener.service.UrlService;
+
+import jakarta.validation.Valid;
+
 import com.shylesh.urlshortener.dto.CreateUrlRequest;
 import com.shylesh.urlshortener.dto.CreateUrlResponse;
 import com.shylesh.urlshortener.entity.UrlMapping;
@@ -27,7 +30,7 @@ public class UrlController {
 
     @PostMapping
     @RequestMapping("/api/urls")
-    public CreateUrlResponse createUrl(@RequestBody CreateUrlRequest request) {
+    public CreateUrlResponse createUrl(@Valid @RequestBody CreateUrlRequest request) {
         return urlService.saveUrl(request);
     }
 
@@ -49,7 +52,7 @@ public class UrlController {
     
     @GetMapping("/{shortUrl}")
     public ResponseEntity<Void> getMethodName(@PathVariable String shortUrl) {
-        return ResponseEntity.status(HttpStatusCode.valueOf(302)).header("Location", urlService.getByShortUrl(shortUrl).getOriginalUrl()).build();
+        return ResponseEntity.status(HttpStatusCode.valueOf(302)).header("Location", urlService.clicked(shortUrl).getOriginalUrl()).build();
     }
     
     

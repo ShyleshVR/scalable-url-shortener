@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import com.shylesh.urlshortener.dto.CreateUrlRequest;
 import com.shylesh.urlshortener.dto.CreateUrlResponse;
 import com.shylesh.urlshortener.entity.UrlMapping;
+import com.shylesh.urlshortener.dto.UrlMappingResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -36,18 +37,18 @@ public class UrlController {
 
     @GetMapping
     @RequestMapping("/api/urls/{id}")
-    public UrlMapping getById(@PathVariable Long id) {
-        return urlService.getById(id);
+    public UrlMappingResponse getById(@PathVariable Long id) {
+        return new UrlMappingResponse(urlService.getById(id));
     }
 
     @GetMapping("/api/urls/all")
-    public List<UrlMapping> getAllUrls() {
+    public List<UrlMappingResponse> getAllUrls() {
         return urlService.getAllUrls();
     }
     
     @GetMapping("/api/urls/shortcode/{shortCode}")
-    public UrlMapping getByShortCode(@PathVariable String shortCode) {
-        return urlService.getByShortCode(shortCode);
+    public UrlMappingResponse getByShortCode(@PathVariable String shortCode) {
+        return new UrlMappingResponse(urlService.getByShortCode(shortCode));
     }
 
     @GetMapping("/{shortCode}")

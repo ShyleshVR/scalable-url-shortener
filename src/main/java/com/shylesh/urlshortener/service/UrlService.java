@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.shylesh.urlshortener.dto.CreateUrlRequest;
 import com.shylesh.urlshortener.dto.CreateUrlResponse;
+import com.shylesh.urlshortener.dto.UrlMappingResponse;
 import com.shylesh.urlshortener.entity.UrlMapping;
 import com.shylesh.urlshortener.repository.UrlMappingRepository;
 import com.shylesh.urlshortener.exception.UrlNotFoundException;
@@ -37,8 +38,11 @@ public class UrlService {
         return urlMappingRepository.findById(id).orElseThrow(() -> new UrlNotFoundException(id));
     }
 
-    public List<UrlMapping> getAllUrls() {
-        return urlMappingRepository.findAll();
+    public List<UrlMappingResponse> getAllUrls() {
+        return urlMappingRepository.findAll()
+            .stream()
+            .map(this::mapToResponse)
+            .toList();
     }
 
     public UrlMapping getByShortCode(String shortCode) {
@@ -50,6 +54,8 @@ public class UrlService {
         urlMapping.setClickCount(urlMapping.getClickCount() + 1);
         return urlMappingRepository.save(urlMapping);
     }
+
+    //Utils Below
 
     private String encodeBase62(long id) {
         if (id == 0) {
@@ -65,5 +71,17 @@ public class UrlService {
 
         return shortUrl.reverse().toString();
     }
+
+    private UrlMappingResponse mapToResponse(UrlMapping urlMapping) {
+
+    UrlMappingResponse response = new UrlMappingResponse();
+
+    response.setId(urlMapping.getId());
+    response.setOriginalUrl(urlMapping.getOriginalUrl());
+    response.setShortCode(urlMapping.getShortCode());
+    response.setClickCount(urlMapping.getClickCount());
+
+    return response;
+}
 
 }

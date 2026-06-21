@@ -45,14 +45,14 @@ public class UrlController {
         return urlService.getAllUrls();
     }
     
-    @GetMapping("/api/urls/shorturl/{shortUrl}")
-    public UrlMapping getByShortUrl(@PathVariable String shortUrl) {
-        return urlService.getByShortUrl(shortUrl);
+    @GetMapping("/api/urls/shortcode/{shortCode}")
+    public UrlMapping getByShortCode(@PathVariable String shortCode) {
+        return urlService.getByShortCode(shortCode);
     }
-    
-    @GetMapping("/{shortUrl}")
-    public ResponseEntity<Void> getMethodName(@PathVariable String shortUrl) {
-        return ResponseEntity.status(HttpStatusCode.valueOf(302)).header("Location", urlService.clicked(shortUrl).getOriginalUrl()).build();
+
+    @GetMapping("/{shortCode}")
+    public ResponseEntity<Void> getMethodName(@PathVariable String shortCode) {
+        return ResponseEntity.status(HttpStatusCode.valueOf(302)).header("Location", urlService.clicked(shortCode).getOriginalUrl()).build();
     }
     
     

@@ -9,6 +9,6 @@ import com.shylesh.urlshortener.entity.UrlMapping;
 @Repository
 public interface UrlMappingRepository extends JpaRepository<UrlMapping, Long> {
 
-    Optional<UrlMapping> findByShortUrl(String shortUrl);
+    Optional<UrlMapping> findByShortCode(String shortCode);
 
 }

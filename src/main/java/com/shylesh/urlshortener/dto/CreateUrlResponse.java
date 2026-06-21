@@ -3,20 +3,20 @@ package com.shylesh.urlshortener.dto;
 public class CreateUrlResponse {
     private Long id;
     private String OriginalUrl;
-    private String shortUrl;
+    private String shortCode;
 
-    public CreateUrlResponse(Long id, String originalUrl, String shortUrl) {
+    public CreateUrlResponse(Long id, String originalUrl, String shortCode) {
         this.id = id;
         this.OriginalUrl = originalUrl;
-        this.shortUrl = shortUrl;
+        this.shortCode = shortCode;
     }
 
-    public String getShortUrl() {
-        return shortUrl;
+    public String getShortCode() {
+        return shortCode;
     }
 
-    public void setShortUrl(String shortUrl) {
-        this.shortUrl = shortUrl;
+    public void setShortCode(String shortCode) {
+        this.shortCode = shortCode;
     }
 
     public Long getId() {

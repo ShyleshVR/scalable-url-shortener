@@ -19,7 +19,7 @@ public class UrlMapping {
     long clickCount = 0;
     
     String originalUrl;
-    String shortUrl;
+    String shortCode;
     Date createdAt;
 
     public long getId() {
@@ -30,8 +30,8 @@ public class UrlMapping {
         return originalUrl;
     }
 
-    public String getShortUrl() {
-        return shortUrl;
+    public String getShortCode() {
+        return shortCode;
     }
 
     public Date getCreatedAt() {
@@ -46,8 +46,8 @@ public class UrlMapping {
         this.originalUrl = originalUrl;
     }
 
-    public void setShortUrl(String shortUrl) {
-        this.shortUrl = shortUrl;
+    public void setShortCode(String shortCode) {
+        this.shortCode = shortCode;
     }
 
     public void setCreatedAt(Date createdAt) {
@@ -61,5 +61,5 @@ public class UrlMapping {
     public void setClickCount(long clickCount) {
         this.clickCount = clickCount;
     }
-    
+
 }

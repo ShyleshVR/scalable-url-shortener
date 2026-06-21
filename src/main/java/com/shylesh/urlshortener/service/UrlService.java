@@ -26,10 +26,10 @@ public class UrlService {
         urlMapping.setCreatedAt(new Date());
 
         UrlMapping savedUrlMapping = urlMappingRepository.save(urlMapping);
-        savedUrlMapping.setShortUrl(encodeBase62(savedUrlMapping.getId()));
+        savedUrlMapping.setShortCode(encodeBase62(savedUrlMapping.getId()));
         savedUrlMapping = urlMappingRepository.save(savedUrlMapping);
 
-        CreateUrlResponse response = new CreateUrlResponse(savedUrlMapping.getId(), savedUrlMapping.getOriginalUrl(), savedUrlMapping.getShortUrl());
+        CreateUrlResponse response = new CreateUrlResponse(savedUrlMapping.getId(), savedUrlMapping.getOriginalUrl(), savedUrlMapping.getShortCode());
         return response;
     }
 
@@ -41,12 +41,12 @@ public class UrlService {
         return urlMappingRepository.findAll();
     }
 
-    public UrlMapping getByShortUrl(String shortUrl) {
-        return urlMappingRepository.findByShortUrl(shortUrl).orElseThrow(() -> new UrlNotFoundException("URL not found for short code: " + shortUrl));
+    public UrlMapping getByShortCode(String shortCode) {
+        return urlMappingRepository.findByShortCode(shortCode).orElseThrow(() -> new UrlNotFoundException("URL not found for short code: " + shortCode));
     }
 
-    public UrlMapping clicked(String shortUrl) {
-        UrlMapping urlMapping = getByShortUrl(shortUrl);
+    public UrlMapping clicked(String shortCode) {
+        UrlMapping urlMapping = getByShortCode(shortCode);
         urlMapping.setClickCount(urlMapping.getClickCount() + 1);
         return urlMappingRepository.save(urlMapping);
     }

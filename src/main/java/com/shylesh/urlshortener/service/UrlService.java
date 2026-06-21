@@ -13,10 +13,10 @@ import com.shylesh.urlshortener.entity.UrlMapping;
 import com.shylesh.urlshortener.repository.UrlMappingRepository;
 import com.shylesh.urlshortener.exception.UrlNotFoundException;
 
+import com.shylesh.urlshortener.util.Utilities;
+
 @Service
 public class UrlService {
-
-    private static final String BASE62_CHARACTERS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
     @Autowired
     private UrlMappingRepository urlMappingRepository;
@@ -27,7 +27,7 @@ public class UrlService {
         urlMapping.setCreatedAt(new Date());
 
         UrlMapping savedUrlMapping = urlMappingRepository.save(urlMapping);
-        savedUrlMapping.setShortCode(encodeBase62(savedUrlMapping.getId()));
+        savedUrlMapping.setShortCode(Utilities.encodeBase62(savedUrlMapping.getId()));
         savedUrlMapping = urlMappingRepository.save(savedUrlMapping);
 
         CreateUrlResponse response = new CreateUrlResponse(savedUrlMapping.getId(), savedUrlMapping.getOriginalUrl(), savedUrlMapping.getShortCode());
@@ -41,7 +41,7 @@ public class UrlService {
     public List<UrlMappingResponse> getAllUrls() {
         return urlMappingRepository.findAll()
             .stream()
-            .map(this::mapToResponse)
+            .map(Utilities::mapToResponse)
             .toList();
     }
 
@@ -54,34 +54,5 @@ public class UrlService {
         urlMapping.setClickCount(urlMapping.getClickCount() + 1);
         return urlMappingRepository.save(urlMapping);
     }
-
-    //Utils Below
-
-    private String encodeBase62(long id) {
-        if (id == 0) {
-            return String.valueOf(BASE62_CHARACTERS.charAt(0));
-        }
-
-        StringBuilder shortUrl = new StringBuilder();
-        while (id > 0) {
-            int remainder = (int) (id % 62);
-            shortUrl.append(BASE62_CHARACTERS.charAt(remainder));
-            id = id / 62;
-        }
-
-        return shortUrl.reverse().toString();
-    }
-
-    private UrlMappingResponse mapToResponse(UrlMapping urlMapping) {
-
-    UrlMappingResponse response = new UrlMappingResponse();
-
-    response.setId(urlMapping.getId());
-    response.setOriginalUrl(urlMapping.getOriginalUrl());
-    response.setShortCode(urlMapping.getShortCode());
-    response.setClickCount(urlMapping.getClickCount());
-
-    return response;
-}
 
 }

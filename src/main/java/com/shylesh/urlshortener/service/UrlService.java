@@ -3,6 +3,8 @@ package com.shylesh.urlshortener.service;
 import java.util.List;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,11 @@ public class UrlService {
 
     @Autowired
     private UrlMappingRepository urlMappingRepository;
+
+    @Autowired
+    private RedisService redisService;
+
+    private static final Logger logger = LoggerFactory.getLogger(UrlService.class);
 
     public CreateUrlResponse saveUrl(CreateUrlRequest request) {
         UrlMapping urlMapping = new UrlMapping();
@@ -49,10 +56,18 @@ public class UrlService {
         return urlMappingRepository.findByShortCode(shortCode).orElseThrow(() -> new UrlNotFoundException("URL not found for short code: " + shortCode));
     }
 
-    public UrlMapping clicked(String shortCode) {
-        UrlMapping urlMapping = getByShortCode(shortCode);
-        urlMapping.setClickCount(urlMapping.getClickCount() + 1);
-        return urlMappingRepository.save(urlMapping);
-    }
+    public String clicked(String shortCode) {
 
+        String originalUrl = redisService.getOriginalUrl(shortCode);
+
+        if (originalUrl == null) {
+
+            originalUrl = getByShortCode(shortCode).getOriginalUrl();
+            redisService.saveUrlMapping(shortCode, originalUrl);
+        }
+
+        redisService.incrementClickCount(shortCode);
+
+        return originalUrl;
+    }
 }

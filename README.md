@@ -277,8 +277,8 @@ src/main/java
 
 ## Future Improvements
 
-* Docker containerization
-* Docker Compose orchestration
+* Docker containerization ✔️
+* Docker Compose orchestration ✔️
 * Swagger/OpenAPI documentation
 * Spring Boot Actuator monitoring
 * Nginx load balancing

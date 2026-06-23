@@ -29,14 +29,12 @@ public class UrlController {
     @Autowired
     private UrlService urlService;
 
-    @PostMapping
-    @RequestMapping("/api/urls")
+    @PostMapping("/api/urls")
     public CreateUrlResponse createUrl(@Valid @RequestBody CreateUrlRequest request) {
         return urlService.saveUrl(request);
     }
 
-    @GetMapping
-    @RequestMapping("/api/urls/{id}")
+    @GetMapping("/api/urls/{id}")
     public UrlMappingResponse getById(@PathVariable Long id) {
         return new UrlMappingResponse(urlService.getById(id));
     }
